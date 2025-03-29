@@ -7,11 +7,17 @@ import (
 )
 
 type (
-	Config struct{ API }
-	API    struct {
+	Config struct {
+		API      API
+		Services Services
+	}
+
+	API struct {
 		ListenPort         uint64
 		CORSAllowedOrigins []string
 	}
+
+	Services struct{}
 )
 
 const (
