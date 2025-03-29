@@ -15,7 +15,7 @@ type broadcastMsg struct {
 	Client    *websocket.Conn
 }
 
-func (s *service) broadcaster(participantID string) {
+func (s *service) broadcaster() {
 	for {
 		msg := <-s.broadcast
 		for _, client := range s.rooms.GetParticipants(msg.ChannelID) {
@@ -51,7 +51,7 @@ func (s *service) JoinChannel(conn *websocket.Conn, joinParams *models.JoinChann
 		conn.Close()
 	}
 
-	go s.broadcaster(participantID.String())
+	go s.broadcaster()
 
 	for {
 		var msg broadcastMsg
@@ -65,7 +65,7 @@ func (s *service) JoinChannel(conn *websocket.Conn, joinParams *models.JoinChann
 		msg.ChannelID = joinParams.ChannelID
 		msg.SenderID = participantID.String()
 
-		log.Printf("send msg {%v} from %v", msg.Message, participantID.String())
+		// log.Printf("send msg {%v} from %v", msg.Message, participantID.String())
 
 		s.broadcast <- msg
 	}

@@ -27,12 +27,12 @@ func (api *api) CreateChannel(c *gin.Context) {
 
 func (api *api) JoinChannel(c *gin.Context) {
 	params := new(models.JoinChannelQuery)
-	if err := c.ShouldBindQuery(&params); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "missed participant name",
-		})
-		return
-	}
+	// if err := c.ShouldBindQuery(&params); err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{
+	// 		"error": "missed participant name",
+	// 	})
+	// 	return
+	// }
 
 	participantIP := c.ClientIP()
 
