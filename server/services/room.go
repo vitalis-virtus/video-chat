@@ -12,7 +12,7 @@ import (
 type Rooms interface {
 	Init()
 	GetParticipants(roomID string) []Participant
-	CreateRoom() string
+	CreateChannel() string
 	DeleteChannel(chID string) error
 }
 
@@ -49,7 +49,7 @@ func (r *rooms) GetParticipants(chID string) []Participant {
 	return r.channels[chID]
 }
 
-func (r *rooms) CreateRoom() string {
+func (r *rooms) CreateChannel() string {
 	r.Lock()
 	defer r.Unlock()
 

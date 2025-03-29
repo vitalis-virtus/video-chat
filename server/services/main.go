@@ -2,12 +2,22 @@ package services
 
 import "github.com/vitalis-virtus/video-chat/config"
 
-type Services interface{}
+type Services interface {
+	CreateChannel() string
+}
 
 type service struct {
-	cfg *config.Services
+	cfg   *config.Services
+	rooms Rooms
 }
 
 func New(cfg *config.Services) Services {
-	return &service{}
+	rooms := NewRoom()
+
+	rooms.Init()
+
+	return &service{
+		cfg:   cfg,
+		rooms: rooms,
+	}
 }
