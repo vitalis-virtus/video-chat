@@ -65,7 +65,15 @@ func (api *api) initialize() {
 		MaxAge: time.Second * 86400,
 	}))
 
-	// api.router.GET("/", api.Index)
+	api.router.GET("/", api.Index)
+	api.router.GET("/health", api.Health)
+
+	channelsGroup := api.router.Group("/channels")
+
+	{
+		channelsGroup.POST("", api.CreateChannel)
+		channelsGroup.GET("/:id", api.JoinChannel)
+	}
 
 	api.server = &http.Server{Addr: fmt.Sprintf(":%d", api.cfg.ListenPort), Handler: api.router}
 }

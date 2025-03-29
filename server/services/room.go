@@ -14,14 +14,20 @@ type Rooms interface {
 	GetParticipants(roomID string) []Participant
 	CreateChannel() string
 	DeleteChannel(chID string) error
+	Connect(chID string, participant Participant) error
 }
 
 type Participant interface {
+	Write(msg map[string]interface{}) error
+	ID() string
+	Close() error
 }
 
 type participant struct {
 	isHost bool
 	id     string
+	ip     string
+	name   string
 	conn   *websocket.Conn
 }
 
@@ -34,8 +40,13 @@ func NewRoom() Rooms {
 	return &rooms{}
 }
 
-func NewParticipant(id string) Participant {
-	return &participant{id: id}
+func NewParticipant(id, ip, name string, conn *websocket.Conn) Participant {
+	return &participant{
+		id:   id,
+		ip:   ip,
+		name: name,
+		conn: conn,
+	}
 }
 
 func (r *rooms) Init() {
@@ -86,4 +97,16 @@ func (r *rooms) DeleteChannel(chID string) error {
 	delete(r.channels, chID)
 
 	return nil
+}
+
+func (r *participant) Write(msg map[string]interface{}) error {
+	return r.conn.WriteJSON(msg)
+}
+
+func (r *participant) ID() string {
+	return r.id
+}
+
+func (r *participant) Close() error {
+	return r.conn.Close()
 }
