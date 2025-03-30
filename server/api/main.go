@@ -8,6 +8,9 @@ import (
 	"net/http"
 	"time"
 
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/vitalis-virtus/video-chat/config"
@@ -64,6 +67,8 @@ func (api *api) initialize() {
 		},
 		MaxAge: time.Second * 86400,
 	}))
+
+	api.router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	api.router.GET("/", api.Index)
 	api.router.GET("/health", api.Health)

@@ -7,6 +7,8 @@ import (
 	"syscall"
 	"time"
 
+	_ "github.com/vitalis-virtus/video-chat/docs"
+
 	"github.com/joho/godotenv"
 	"github.com/vitalis-virtus/video-chat/api"
 	"github.com/vitalis-virtus/video-chat/config"
@@ -19,6 +21,18 @@ func init() {
 	}
 }
 
+//	@title			vide-chat API
+//	@version		1.0
+//	@description	This is a swagger specification for video-chat server backend.
+
+// @host						localhost
+//
+// @securityDefinitions.apikey	ApiKeyAuth
+// @in							header
+// @name						Authorization
+// @description				    Used for secure private routes
+//
+// @BasePath
 func main() {
 	cfg, err := config.GetNewConfig()
 	if err != nil {

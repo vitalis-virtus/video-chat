@@ -17,6 +17,14 @@ var upg = websocket.Upgrader{
 	},
 }
 
+// CreateChannel godoc
+// @Summary Create new channel
+// @Description Create new channel.
+// @Tags channels
+// @Produce json
+// @Success 200 {object} models.CreateChannelRes "Success"
+// @Failure 500 {object} models.HTTPError "Cannot create channel"
+// @Router /channels [post]
 func (api *api) CreateChannel(c *gin.Context) {
 	id := api.services.CreateChannel()
 
@@ -25,6 +33,14 @@ func (api *api) CreateChannel(c *gin.Context) {
 	})
 }
 
+// JoinChannel godoc
+// @Summary Join to channet
+// @Description Join to channel.
+// @Tags channels
+// @Param id path int true "Channel ID"
+// @Success 101 {string} string "WebSocket Protocol Switch"
+// @Failure 500 {object} models.HTTPError "Internal server error"
+// @Router /channels/{id} [get]
 func (api *api) JoinChannel(c *gin.Context) {
 	params := new(models.JoinChannelQuery)
 	// if err := c.ShouldBindQuery(&params); err != nil {
@@ -55,8 +71,6 @@ func (api *api) JoinChannel(c *gin.Context) {
 	}
 
 	params.ChannelID = req.ID
-
-	log.Printf("%+v\n", params)
 
 	conn, err := upg.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
